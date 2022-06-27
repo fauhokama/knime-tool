@@ -1,22 +1,35 @@
-import axios from "axios";
-import { PromptObject } from "prompts";
-import { ARTIFACTORY_API_URL } from "../constants";
+import decompress from "../util/decompress";
+import { DOWNLOAD_FOLDER, DOWNLOAD_URL } from "../constants";
+import { getAbsolutePath, Os } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
+import download from "../util/download";
 
-export const download = async (answers: any[] = []): Promise<string[]> => {
-	const { data } = await axios.get(`${ARTIFACTORY_API_URL}/${answers.join("/")}`);
+type Version = "nightly" | "standard";
 
-	if (!data.folder) return answers;
-
-	const question: PromptObject = {
+const question = async () => {
+	const version = await ask<Version>({
 		type: "select",
-		name: "version",
-		message: "Select:",
-		choices: choices(data.children.map((child: { name: string }) => child.name).filter((name: string) => !name.endsWith(".exe"))),
-	};
+		name: "c1",
+		message: "Select a version:",
+		choices: choices<Version>(["nightly", "standard"]),
+	});
 
-	answers.push(await ask(question));
+	const os = await ask<Os>({
+		type: "select",
+		name: "c2",
+		message: "Select an OS:",
+		choices: choices<Os>(["linux", "macosx", "win"]),
+	});
 
-	return download(answers);
+	return { os, version };
 };
+
+const action = async (answer: { version: Version; os: Os }) => {
+	const url = DOWNLOAD_URL[answer.version][answer.os];
+	const filename = await download(url, DOWNLOAD_FOLDER);
+	const source = getAbsolutePath(filename as string);
+	return decompress(source, DOWNLOAD_FOLDER, true);
+};
+
+export default { question, action };

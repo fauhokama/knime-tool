@@ -1,25 +1,10 @@
-import { prompt, PromptObject } from "prompts";
-import { download } from "./commands/download";
-import { list } from "./commands/list";
-import { ask } from "./util/ask";
-import { choices } from "./util/choices";
+import { override } from "prompts";
+import initial from "./commands/initial";
+import { parseArgs } from "./util/parseArgs";
 
 const main = async (args: string[]) => {
-	const initialQuestion: PromptObject = {
-		type: "select",
-		name: "command",
-		message: "Select a command:",
-		choices: choices(["download", "list"]),
-	};
-
-	switch (await ask(initialQuestion)) {
-		case "download":
-			download();
-			break;
-		case "list":
-			list();
-			break;
-	}
+	override(parseArgs(args));
+	await initial.action(await initial.question());
 };
 
 main(process.argv);

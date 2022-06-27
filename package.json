@@ -3,15 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "ncc run src/index.ts"
+    "dev": "ncc run src/index.ts",
+    "build": "ncc build src/index.ts -m"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "arg": "^5.0.2",
     "axios": "^0.27.2",
+    "decompress": "^4.2.1",
+    "decompress-targz": "^4.1.1",
+    "extract-dmg": "^1.0.0",
+    "nodejs-file-downloader": "^4.9.3",
     "prompts": "^2.4.2"
   },
   "devDependencies": {
+    "@types/decompress": "^4.2.4",
     "@types/node": "^18.0.0",
     "@types/prompts": "^2.0.14",
     "@vercel/ncc": "^0.34.0",
