@@ -2,8 +2,8 @@ import arg = require("arg");
 
 export type Args = {
 	commands: string[];
-	extensions: string[];
-	knimeIni: string[];
+	extensions: string[] | null;
+	knimeIni: string[] | null;
 };
 
 const getArgs = (rawArgs: string[]): Args => {
@@ -11,9 +11,6 @@ const getArgs = (rawArgs: string[]): Args => {
 		{
 			"--extension": [String],
 			"--knimeini": [String],
-
-			"-e": "--extension",
-			"-k": "--knimeini",
 		},
 		{
 			argv: rawArgs.slice(2),
@@ -22,16 +19,17 @@ const getArgs = (rawArgs: string[]): Args => {
 
 	return {
 		commands: args._,
-		extensions: args["--extension"] || [],
-		knimeIni: args["--knimeini"] || [],
+		extensions: args["--extension"] || null,
+		knimeIni: args["--knimeini"] || null,
 	};
 };
 
 const formatArgs = (args: Args) => {
 	const obj = {};
 	Object.assign(obj, helper(args.commands, "c"));
-	Object.assign(obj, helper(args.extensions, "e"));
-	Object.assign(obj, helper(args.knimeIni, "k"));
+	if (args.extensions) Object.assign(obj, { e: args.extensions });
+	if (args.knimeIni) Object.assign(obj, { k: args.knimeIni });
+
 	return obj;
 };
 

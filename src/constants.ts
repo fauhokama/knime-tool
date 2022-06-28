@@ -4,7 +4,7 @@ export const ARTIFACTORY_API_URL =
 	"https://artifactory.knime.com/ui/api/v1/ui/nativeBrowser/generic-downloads/knime/analytics-platform/standard";
 export const ARTIFACTORY_DOWNLOAD_URL = "https://artifactory.knime.com/artifactory/generic-downloads/knime/analytics-platform/standard/";
 export const EXTENSIONS = ["org.knime.features.ui.feature.group", "org.knime.features.core.streaming.feature.group"];
-export const KNIMEINI = ["Dchromium.remote_debugging_port=8888", "Dchromium.debug", "-Dperspective=org.knime.ui.java.perspective"];
+export const KNIMEINI = ["-Dchromium.remote_debugging_port=8888", "-Dchromium.debug", "-Dperspective=org.knime.ui.java.perspective"];
 export const DOWNLOAD_FOLDER = homedir() + "/knime-tool";
 export const REPOSITORIES = ["https://update.knime.com/analytics-platform/4.6"];
 
