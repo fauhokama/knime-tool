@@ -4,7 +4,12 @@
   "description": "",
   "scripts": {
     "dev": "ncc run src/index.ts",
-    "build": "ncc build src/index.ts -m"
+    "build": "ncc build src/index.ts -m",
+    "pkg:macarm": "pkg -t node16-macos-arm64 -o build/macarm/kt --compress GZip dist/index.js",
+    "pkg:mac": "pkg -t node16-macos-x64 -o build/mac64/kt --compress GZip dist/index.js",
+    "pkg:linux": "pkg -t node16-linux-x64 -o build/linux64/kt --compress GZip dist/index.js",
+    "pkg:win": "pkg -t node16-win-x64 -o build/win64/kt --compress GZip dist/index.js",
+    "pkg:all": "npm run build && npm run pkg:macarm && npm run pkg:mac && npm run pkg:linux && npm run pkg:win"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +27,7 @@
     "@types/node": "^18.0.0",
     "@types/prompts": "^2.0.14",
     "@vercel/ncc": "^0.34.0",
+    "pkg": "^5.7.0",
     "typescript": "^4.7.4"
   }
 }
