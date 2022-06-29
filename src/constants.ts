@@ -12,10 +12,9 @@ if (existsSync(CONFIG)) {
 
 export const ARTIFACTORY_API_URL =
 	(c?.ARTIFACTORY_API_URL as string) ??
-	"https://artifactory.knime.com/ui/api/v1/ui/nativeBrowser/generic-downloads/knime/analytics-platform/standard";
+	"https://artifactory.knime.com/ui/api/v1/ui/nativeBrowser/generic-downloads/knime/analytics-platform";
 export const ARTIFACTORY_DOWNLOAD_URL =
-	(c?.ARTIFACTORY_DOWNLOAD_URL as string) ??
-	"https://artifactory.knime.com/artifactory/generic-downloads/knime/analytics-platform/standard/";
+	(c?.ARTIFACTORY_DOWNLOAD_URL as string) ?? "https://artifactory.knime.com/artifactory/generic-downloads/knime/analytics-platform";
 export const EXTENSIONS = (c?.EXTENSIONS as string[]) ?? [
 	"org.knime.features.ui.feature.group",
 	"org.knime.features.core.streaming.feature.group",
