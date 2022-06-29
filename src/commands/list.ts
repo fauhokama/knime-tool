@@ -5,7 +5,6 @@ import { ask } from "../util/ask";
 import { choices } from "../util/choices";
 import { remove } from "../util/decompress";
 import { shellCmd } from "../util/shellCmd";
-import artifactory from "./artifactory";
 import extension from "./extension";
 import knimeIni from "./knimeIni";
 
@@ -14,7 +13,7 @@ const question1 = async () => {
 		type: "select",
 		name: "c1",
 		message: "Select an AP:",
-		choices: choices<string>(readdirSync(DOWNLOAD_FOLDER)),
+		choices: choices<string>(readdirSync(DOWNLOAD_FOLDER).filter(filterAp)),
 	});
 };
 
@@ -56,5 +55,10 @@ export const action = async (q: { ap: string; action: Action }) => {
 			break;
 	}
 };
+
+const filterAp = (file: string) => {
+	if (file.endsWith(".app")) return file;
+	if (file.startsWith("knime_")) return file
+}
 
 export default { question, action };
