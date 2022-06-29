@@ -4,8 +4,8 @@ export const ask = async <T>(question: PromptObject): Promise<T> => {
 	const response = await prompt(question);
 	const r = response[question.name as string];
 
-	// No validation for Extensions or KnimeIni.
-	if (question.name === "e" || question.name === "k") return r;
+	// No validation for Extensions or KnimeIni or Lists.
+	if (question.name === "e" || question.name === "k" || question.message === "Select an AP:") return r;
 
 	validateAnswer(question.choices as Choice[], r);
 	return r;

@@ -9,12 +9,17 @@ import extension from "./extension";
 import knimeIni from "./knimeIni";
 
 const question1 = async () => {
-	return ask<string>({
+	const answer = await ask<string>({
 		type: "select",
 		name: "c1",
 		message: "Select an AP:",
 		choices: choices<string>(readdirSync(DOWNLOAD_FOLDER).filter(filterAp)),
 	});
+	if (answer === undefined) {
+		console.log("No AP's found");
+		process.exit();
+	}
+	return answer;
 };
 
 type Action = "open" | "remove" | "extension" | "knimeIni";
@@ -58,7 +63,7 @@ export const action = async (q: { ap: string; action: Action }) => {
 
 const filterAp = (file: string) => {
 	if (file.endsWith(".app")) return file;
-	if (file.startsWith("knime_")) return file
-}
+	if (file.startsWith("knime_")) return file;
+};
 
 export default { question, action };
