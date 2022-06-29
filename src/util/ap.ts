@@ -17,10 +17,10 @@ const getPathToExecutable = (os: Os) => {
 			exe = "/Contents/MacOS/knime";
 			break;
 		case "win":
-			exe = "knime.exe";
+			exe = "/knime.exe";
 			break;
 		case "linux":
-			exe = "knime";
+			exe = "/knime";
 			break;
 	}
 	return exe;
