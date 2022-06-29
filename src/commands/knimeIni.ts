@@ -16,7 +16,7 @@ const question = async () => {
 export const action = async (ap: string, args: string[]) => {
 	const knimeIni = ap + getKnimeIniPath(ap);
 	for (const arg of args) {
-		appendFileSync(knimeIni, "-" + arg + "\n");
+		appendFileSync(knimeIni, arg + "\n");
 	}
 };
 
