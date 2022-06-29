@@ -21,7 +21,7 @@ export default async (source: string, destination: string, removeCompressed?: bo
 };
 
 const unzip = async (file: string, location: string) => {
-	const data = await dc(file);
+	const data = await dc(file, location);
 	return data[0].path;
 };
 
