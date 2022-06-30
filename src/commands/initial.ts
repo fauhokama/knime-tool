@@ -1,9 +1,10 @@
-import { bold, green } from "kleur/colors";
+import { bold, cyan, green } from "kleur/colors";
 import { REPOSITORIES } from "../constants";
 import { getAbsolutePath } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
 import pipe from "../util/pipe";
+import { rerunArtifactory, rerunDownload } from "../util/rerun";
 import artifactory from "./artifactory";
 import download from "./download";
 import extension from "./extension";
@@ -33,6 +34,8 @@ const action = async (command: Initial) => {
 			await extension.action(apr, REPOSITORIES, er);
 			await knimeIni.action(apr, kr);
 			console.log(green(`Open AP by running the ${bold("list")} command`));
+			console.log(cyan("Rerun this command:"));
+			console.log(rerunArtifactory(ar, er, kr));
 			break;
 		case "list":
 			const al = await list.question();
@@ -48,6 +51,8 @@ const action = async (command: Initial) => {
 			await extension.action(ap, REPOSITORIES, e);
 			await knimeIni.action(ap, k);
 			console.log(green(`Open AP by running the ${bold("list")} command`));
+			console.log(cyan("Rerun this command:"));
+			console.log(rerunDownload(a, e, k));
 			break;
 	}
 };

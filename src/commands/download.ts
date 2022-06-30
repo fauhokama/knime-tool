@@ -6,7 +6,7 @@ import { choices } from "../util/choices";
 import download from "../util/download";
 import { cyan } from "kleur/colors";
 
-type Version = "nightly" | "standard";
+export type Version = "nightly" | "standard";
 
 const question = async () => {
 	const version = await ask<Version>({
