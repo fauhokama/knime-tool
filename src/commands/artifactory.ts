@@ -1,4 +1,5 @@
 import axios from "axios";
+import { cyan } from "kleur/colors";
 import { PromptObject } from "prompts";
 import { ARTIFACTORY_API_URL, ARTIFACTORY_DOWNLOAD_URL, DOWNLOAD_FOLDER } from "../constants";
 import { getAbsolutePath } from "../util/ap";
@@ -27,8 +28,10 @@ const question = async (answers: any[] = [], index = 1): Promise<string[]> => {
 
 const action = async (path: string[]) => {
 	const url = `${ARTIFACTORY_DOWNLOAD_URL}/${path.join("/")}`;
+	console.log(`${cyan(`Downloading from URL:`)} ${url}`);
 	const filename = await download(url, DOWNLOAD_FOLDER);
 	const source = getAbsolutePath(filename as string);
+	console.log(`${cyan(`Decompressing...`)}`);
 	return decompress(source, DOWNLOAD_FOLDER, true);
 };
 

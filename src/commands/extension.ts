@@ -1,3 +1,4 @@
+import { yellow } from "kleur/colors";
 import { EXTENSIONS } from "../constants";
 import { getExecutable } from "../util/ap";
 import { ask } from "../util/ask";
@@ -14,7 +15,10 @@ const question = async (): Promise<string[]> => {
 };
 
 const action = async (ap: string, repositories: string[], extensions: string[]) => {
-	if (extensions.length === 0) return;
+	if (extensions.length === 0) {
+		console.log(yellow("No extensions selected"));
+		return;
+	}
 	if (repositories.length === 0) {
 		console.error("No repositories found");
 		return;
