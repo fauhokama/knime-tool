@@ -1,3 +1,4 @@
+import { bold, green } from "kleur/colors";
 import { REPOSITORIES } from "../constants";
 import { getAbsolutePath } from "../util/ap";
 import { ask } from "../util/ask";
@@ -31,7 +32,7 @@ const action = async (command: Initial) => {
 			const apr = getAbsolutePath(fr);
 			await extension.action(apr, REPOSITORIES, er);
 			await knimeIni.action(apr, kr);
-
+			console.log(green(`Open AP by running the ${bold("list")} command`));
 			break;
 		case "list":
 			const al = await list.question();
@@ -46,6 +47,7 @@ const action = async (command: Initial) => {
 			const ap = getAbsolutePath(f);
 			await extension.action(ap, REPOSITORIES, e);
 			await knimeIni.action(ap, k);
+			console.log(green(`Open AP by running the ${bold("list")} command`));
 			break;
 	}
 };
