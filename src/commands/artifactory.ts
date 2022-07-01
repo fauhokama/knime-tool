@@ -17,7 +17,11 @@ const question = async (answers: any[] = [], index = 1): Promise<string[]> => {
 		type: "select",
 		name: `c${index}`,
 		message: "Select:",
-		choices: choices(data.children.map((child: { name: string }) => child.name).filter((name: string) => !name.endsWith(".exe"))),
+		choices:
+			choices(data.children
+				.map((child: { name: string }) => child.name)
+				// No support for .exe files
+				.filter((name: string) => !name.endsWith(".exe"))),
 	};
 
 	answers.push(await ask(q));
