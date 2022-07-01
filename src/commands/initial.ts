@@ -25,21 +25,10 @@ const question = async (): Promise<Initial> => {
 const action = async (command: Initial) => {
 	switch (command) {
 		case "artifactory":
-			const ar = await artifactory.question();
-			const er = await extension.question();
-			const kr = await knimeIni.question();
-
-			const fr = await artifactory.action(ar);
-			const apr = getAbsolutePath(fr);
-			await extension.action(apr, REPOSITORIES, er);
-			await knimeIni.action(apr, kr);
-			console.log(green(`Open AP by running the ${bold("list")} command`));
-			console.log(cyan("Rerun this command:"));
-			console.log(rerunArtifactory(ar, er, kr));
+			await artifactoryAction();
 			break;
 		case "list":
-			const al = await list.question();
-			await list.action(al);
+			await listAction();
 			break;
 		case "download":
 			const a = await download.question();
@@ -55,6 +44,29 @@ const action = async (command: Initial) => {
 			console.log(rerunDownload(a, e, k));
 			break;
 	}
+};
+
+const artifactoryAction = async () => {
+	const artifactoryAnswer = await artifactory.question();
+	const extensionAnswer = await extension.question();
+	const knimeiniAnswer = await knimeIni.question();
+
+	const fr = await artifactory.action(artifactoryAnswer);
+	const apr = getAbsolutePath(fr);
+	await extension.action(apr, REPOSITORIES, extensionAnswer);
+	await knimeIni.action(apr, knimeiniAnswer);
+	console.log(green(`Open AP by running the ${bold("list")} command`));
+	console.log(cyan("Rerun this command:"));
+	console.log(rerunArtifactory(artifactoryAnswer, extensionAnswer, knimeiniAnswer));
+}
+
+const listAction = async () => {
+	pipe(
+		await list.question(),
+		list.action
+	);
+	// const al = await list.question();
+	// await list.action(al);
 };
 
 export default { question, action };
