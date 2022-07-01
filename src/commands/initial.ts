@@ -65,10 +65,8 @@ const artifactoryAction = async () => {
 }
 
 const listAction = async () => {
-	pipe(
-		await list.question(),
-		list.action
-	);
+	const answer = await list.question();
+	await list.action(answer);
 };
 
 export default { question, action };
