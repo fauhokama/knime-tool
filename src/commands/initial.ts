@@ -31,30 +31,34 @@ const action = async (command: Initial) => {
 			await listAction();
 			break;
 		case "download":
-			const a = await download.question();
-			const e = await extension.question();
-			const k = await knimeIni.question();
-
-			const f = await download.action(a);
-			const ap = getAbsolutePath(f);
-			await extension.action(ap, REPOSITORIES, e);
-			await knimeIni.action(ap, k);
-			console.log(green(`Open AP by running the ${bold("list")} command`));
-			console.log(cyan("Rerun this command:"));
-			console.log(rerunDownload(a, e, k));
+			await downloadAction()
 			break;
 	}
 };
+
+const downloadAction = async () => {
+	const artifactoryAnswer = await download.question();
+	const extensionAnswer = await extension.question();
+	const knimeiniAnswer = await knimeIni.question();
+
+	const filename = await download.action(artifactoryAnswer);
+	const absolutePath = getAbsolutePath(filename);
+	await extension.action(absolutePath, REPOSITORIES, extensionAnswer);
+	await knimeIni.action(absolutePath, knimeiniAnswer);
+	console.log(green(`Open AP by running the ${bold("list")} command`));
+	console.log(cyan("Rerun this command:"));
+	console.log(rerunDownload(artifactoryAnswer, extensionAnswer, knimeiniAnswer));
+}
 
 const artifactoryAction = async () => {
 	const artifactoryAnswer = await artifactory.question();
 	const extensionAnswer = await extension.question();
 	const knimeiniAnswer = await knimeIni.question();
 
-	const fr = await artifactory.action(artifactoryAnswer);
-	const apr = getAbsolutePath(fr);
-	await extension.action(apr, REPOSITORIES, extensionAnswer);
-	await knimeIni.action(apr, knimeiniAnswer);
+	const filename = await artifactory.action(artifactoryAnswer);
+	const absolutePath = getAbsolutePath(filename);
+	await extension.action(absolutePath, REPOSITORIES, extensionAnswer);
+	await knimeIni.action(absolutePath, knimeiniAnswer);
 	console.log(green(`Open AP by running the ${bold("list")} command`));
 	console.log(cyan("Rerun this command:"));
 	console.log(rerunArtifactory(artifactoryAnswer, extensionAnswer, knimeiniAnswer));
@@ -65,8 +69,6 @@ const listAction = async () => {
 		await list.question(),
 		list.action
 	);
-	// const al = await list.question();
-	// await list.action(al);
 };
 
 export default { question, action };
