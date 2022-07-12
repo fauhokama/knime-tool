@@ -6,7 +6,12 @@ const config = new Conf({
 	defaults: {
 		ARTIFACTORY_API_URL: "https://artifactory.knime.com/ui/api/v1/ui/nativeBrowser/generic-downloads/knime/analytics-platform",
 		ARTIFACTORY_DOWNLOAD_URL: "https://artifactory.knime.com/artifactory/generic-downloads/knime/analytics-platform",
-		EXTENSIONS: ["org.knime.features.ui.feature.group", "org.knime.features.core.streaming.feature.group"],
+		EXTENSIONS: [
+			"org.knime.features.ui.feature.group",
+			"org.knime.features.core.streaming.feature.group",
+			"org.knime.features.ext.itemset.feature.group",
+			"org.knime.features.ext.textprocessing.feature.group",
+			"org.knime.features.reporting.designer.feature.group"],
 		KNIMEINI: ["-Dchromium.remote_debugging_port=8888", "-Dchromium.debug", "-Dperspective=org.knime.ui.java.perspective"],
 		DOWNLOAD_FOLDER: homedir() + "/knime-tool",
 		REPOSITORIES: ["https://update.knime.com/analytics-platform/4.6"],
