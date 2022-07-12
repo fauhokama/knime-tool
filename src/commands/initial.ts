@@ -3,7 +3,6 @@ import { REPOSITORIES } from "../constants";
 import { getAbsolutePath } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
-import pipe from "../util/pipe";
 import { rerunArtifactory, rerunDownload } from "../util/rerun";
 import artifactory from "./artifactory";
 import download from "./download";
