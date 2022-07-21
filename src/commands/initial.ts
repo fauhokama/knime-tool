@@ -9,15 +9,16 @@ import download from "./download";
 import extension from "./extension";
 import knimeIni from "./knimeIni";
 import list from "./list";
+import version from "./version";
 
-type Initial = "artifactory" | "list" | "download";
+type Initial = "artifactory" | "list" | "download" | "version";
 
 const question = async (): Promise<Initial> => {
 	return ask<Initial>({
 		type: "select",
 		name: "c0",
 		message: "Select a command:",
-		choices: choices<Initial>(["download", "list", "artifactory"]),
+		choices: choices<Initial>(["download", "list", "artifactory", "version"]),
 	});
 };
 
@@ -31,6 +32,9 @@ const action = async (command: Initial) => {
 			break;
 		case "download":
 			await downloadAction()
+			break;
+		case "version":
+			await versionAction()
 			break;
 	}
 };
@@ -67,5 +71,10 @@ const listAction = async () => {
 	const answer = await list.question();
 	await list.action(answer);
 };
+
+const versionAction = async () => {
+	const answer = await version.question()
+	await version.action(answer)
+}
 
 export default { question, action };
