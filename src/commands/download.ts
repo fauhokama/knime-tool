@@ -1,11 +1,9 @@
-import decompress from "../util/decompress";
-import { DOWNLOAD_FOLDER, DOWNLOAD_URL } from "../constants";
-import { getAbsolutePath, Os } from "../util/ap";
+import { DOWNLOAD_URL } from "../constants";
+import { Os } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
-import download from "../util/download";
-import { cyan } from "kleur/colors";
 import { downloadAndDecompress } from "../util/downloadAndDecompress";
+import { osQuestion } from "../util/osQuestion";
 
 export type Version = "nightly" | "standard";
 
@@ -17,12 +15,7 @@ const question = async () => {
 		choices: choices<Version>(["nightly", "standard"]),
 	});
 
-	const os = await ask<Os>({
-		type: "select",
-		name: "c2",
-		message: "Select an OS:",
-		choices: choices<Os>(["linux", "macosx", "win"]),
-	});
+	const os = await osQuestion("c2");
 
 	return { os, version };
 };
