@@ -16,12 +16,16 @@ const formatKnimeIni = (arr: string[]) => {
 	return ret;
 };
 
-const formatDow = (obj: { os: Os; version: Version }) => {
+const formatDownload = (obj: { os: Os; version: Version }) => {
+	return `${obj.version} ${obj.os}`;
+};
+
+const formatVersion = (obj: { os: Os; version: string }) => {
 	return `${obj.version} ${obj.os}`;
 };
 
 export const rerunDownload = (obj: { os: Os; version: Version }, e: string[], k: string[]) => {
-	return `kt download ${formatDow(obj)} ${formatExtensions(e)} ${formatKnimeIni(k)}
+	return `kt download ${formatDownload(obj)} ${formatExtensions(e)} ${formatKnimeIni(k)}
 	`;
 };
 
@@ -29,3 +33,8 @@ export const rerunArtifactory = (a: string[], e: string[], k: string[]) => {
 	return `kt artifactory ${formatArt(a)} ${formatExtensions(e)} ${formatKnimeIni(k)}
 	`;
 };
+
+export const rerunVersion = (obj: { os: Os; version: string }, e: string[], k: string[]) => {
+	return `kt version ${formatVersion(obj)} ${formatExtensions(e)} ${formatKnimeIni(k)}
+	`;
+}

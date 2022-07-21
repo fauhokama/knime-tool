@@ -1,8 +1,5 @@
-import { DOWNLOAD_URL } from "../constants";
-import { Os } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
-import { downloadAndDecompress } from "../util/downloadAndDecompress";
 import { osQuestion } from "../util/osQuestion";
 
 export type Version = "nightly" | "standard";
@@ -20,9 +17,4 @@ const question = async () => {
 	return { os, version };
 };
 
-const action = async (answer: { version: Version; os: Os }) => {
-	const url = DOWNLOAD_URL[answer.version][answer.os];
-	return downloadAndDecompress(url)
-};
-
-export default { question, action };
+export default { question };
