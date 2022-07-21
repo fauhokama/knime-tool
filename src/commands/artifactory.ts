@@ -7,6 +7,7 @@ import { ask } from "../util/ask";
 import { choices } from "../util/choices";
 import decompress from "../util/decompress";
 import download from "../util/download";
+import { downloadAndDecompress } from "../util/downloadAndDecompress";
 
 const question = async (answers: any[] = [], index = 1): Promise<string[]> => {
 	const { data } = await axios.get(`${ARTIFACTORY_API_URL}/${answers.join("/")}`);
@@ -32,11 +33,7 @@ const question = async (answers: any[] = [], index = 1): Promise<string[]> => {
 
 const action = async (path: string[]) => {
 	const url = `${ARTIFACTORY_DOWNLOAD_URL}/${path.join("/")}`;
-	console.log(`${cyan(`Downloading from URL:`)} ${url}`);
-	const filename = await download(url, DOWNLOAD_FOLDER);
-	const source = getAbsolutePath(filename as string);
-	console.log(`${cyan(`Decompressing...`)}`);
-	return decompress(source, DOWNLOAD_FOLDER, true);
+	return downloadAndDecompress(url)
 };
 
 export default { question, action };

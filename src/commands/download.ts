@@ -5,6 +5,7 @@ import { ask } from "../util/ask";
 import { choices } from "../util/choices";
 import download from "../util/download";
 import { cyan } from "kleur/colors";
+import { downloadAndDecompress } from "../util/downloadAndDecompress";
 
 export type Version = "nightly" | "standard";
 
@@ -28,11 +29,7 @@ const question = async () => {
 
 const action = async (answer: { version: Version; os: Os }) => {
 	const url = DOWNLOAD_URL[answer.version][answer.os];
-	console.log(`${cyan(`Downloading from URL:`)} ${url}`);
-	const filename = await download(url, DOWNLOAD_FOLDER);
-	const source = getAbsolutePath(filename as string);
-	console.log(`${cyan(`Decompressing...`)}`);
-	return decompress(source, DOWNLOAD_FOLDER, true);
+	return downloadAndDecompress(url)
 };
 
 export default { question, action };
