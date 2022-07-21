@@ -1,5 +1,6 @@
 import { readdirSync } from "fs";
 import { DOWNLOAD_FOLDER } from "../constants";
+import { shellCmd } from "./shellCmd";
 
 export type Os = "linux" | "macosx" | "win";
 
@@ -39,3 +40,8 @@ export const getKnimeIniPath = (ap: string) => {
 	const os = getOsFromApDirectory(ap);
 	return os === "macosx" ? "/Contents/Eclipse/knime.ini" : "/knime.ini";
 };
+
+export const openAP = (ap: string) => {
+	const pathToExecutable = (ap + getExecutable(ap)).replace(/(\s+)/g, "\\$1");
+	shellCmd(pathToExecutable, true);
+}

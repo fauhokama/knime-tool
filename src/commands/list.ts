@@ -1,10 +1,9 @@
 import { readdirSync } from "fs";
 import { DOWNLOAD_FOLDER, REPOSITORIES } from "../constants";
-import { getAbsolutePath, getExecutable } from "../util/ap";
+import { getAbsolutePath, openAP } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
 import { remove } from "../util/decompress";
-import { shellCmd } from "../util/shellCmd";
 import extension from "./extension";
 import knimeIni from "./knimeIni";
 
@@ -41,11 +40,9 @@ const question = async () => {
 export const action = async (q: { ap: string; action: Action }) => {
 	const ap = getAbsolutePath(q.ap);
 
-	const pathToExecutable = (ap + getExecutable(ap)).replace(/(\s+)/g, "\\$1");
-
 	switch (q.action) {
 		case "open":
-			shellCmd(pathToExecutable, true);
+			openAP(ap);
 			break;
 		case "extension":
 			const ee = await extension.question();

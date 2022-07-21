@@ -1,15 +1,17 @@
 import { bold, cyan, green } from "kleur/colors";
 import { ARTIFACTORY_DOWNLOAD_URL, DOWNLOAD_URL, REPOSITORIES } from "../constants";
-import { getAbsolutePath } from "../util/ap";
+import { getAbsolutePath, openAP } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
 import { downloadAndDecompress } from "../util/downloadAndDecompress";
 import { rerunArtifactory, rerunDownload, rerunVersion } from "../util/rerun";
+import { shellCmd } from "../util/shellCmd";
 import artifactory from "./artifactory";
 import download from "./download";
 import extension from "./extension";
 import knimeIni from "./knimeIni";
 import list from "./list";
+import open from "./open";
 import version from "./version";
 
 type Initial = "artifactory" | "list" | "download" | "version";
@@ -46,10 +48,10 @@ const downloadAction = async () => {
 	const knimeini = await knimeIni.question();
 
 	const url = DOWNLOAD_URL[answer.version][answer.os];
-	await __ap(url, extensions, knimeini)
+	const open = await __ap(url, extensions, knimeini)
 
 	console.log(cyan("Rerun this command:"));
-	console.log(rerunDownload(answer, extensions, knimeini));
+	console.log(rerunDownload(answer, extensions, knimeini, open));
 }
 
 const artifactoryAction = async () => {
@@ -58,10 +60,10 @@ const artifactoryAction = async () => {
 	const knimeini = await knimeIni.question();
 
 	const url = `${ARTIFACTORY_DOWNLOAD_URL}/${answer.join("/")}`;
-	await __ap(url, extensions, knimeini)
+	const open = await __ap(url, extensions, knimeini)
 
 	console.log(cyan("Rerun this command:"));
-	console.log(rerunArtifactory(answer, extensions, knimeini));
+	console.log(rerunArtifactory(answer, extensions, knimeini, open));
 }
 
 const listAction = async () => {
@@ -87,10 +89,10 @@ const versionAction = async () => {
 			break;
 	}
 
-	await __ap(url, extensions, knimeini)
+	const open = await __ap(url, extensions, knimeini)
 
 	console.log(cyan("Rerun this command:"));
-	console.log(rerunVersion(answer, extensions, knimeini));
+	console.log(rerunVersion(answer, extensions, knimeini, open));
 }
 
 // Downloads, Decompress and install extensions & knimeIni.
@@ -101,6 +103,11 @@ const __ap = async (url: string, extensions: string[], knimeini: string[]) => {
 	await knimeIni.action(absolutePath, knimeini);
 	console.log(green(`Open AP by running the ${bold("list")} command`));
 
+	const answer = await open.question();
+
+	if (answer) openAP(absolutePath);
+
+	return answer;
 }
 
 export default { question, action };
