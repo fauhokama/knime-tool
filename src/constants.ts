@@ -27,7 +27,7 @@ const config = new Conf({
 				linux: "https://download.knime.org/analytics-platform/nightly/linux/knime_latest.linux.gtk.x86_64.tar.gz",
 			},
 		},
-		VERSIONS: ["4.4.4", "4.5.0", "4.5.1", "4.5.2", "4.6.0"]
+		VERSIONS: ["4.4.4", "4.5.0", "4.5.1", "4.5.2", "4.6.0", "4.6.1"]
 	}
 });
 
