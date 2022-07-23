@@ -1,10 +1,11 @@
 import { existsSync, mkdirSync } from "fs";
-import { bold, cyan, yellow } from "kleur/colors";
 import { override } from "prompts";
-import initial from "./commands/initial";
-import { CONFIG_FILE, DOWNLOAD_FOLDER } from "./constants";
+import artifactory from "./commands/artifactory";
+import download from "./commands/download";
+import list from "./commands/list";
+import version from "./commands/version";
+import { DOWNLOAD_FOLDER } from "./constants";
 import { ask } from "./util/ask";
-import { parseArgs } from "./util/parseArgs";
 import { choices } from "./util/choices";
 import { printInitialWelcome } from "./util/print";
 
@@ -15,11 +16,38 @@ const main = async () => {
 
 	printInitialWelcome()
 
-	
+	// Adds the possibility to rerun commands without the prompt ui.
 	override(process.argv);
 
-	await initial.action(await initial.question());
+	type Initial = "artifactory" | "list" | "download" | "version";
 
+	const question = async (): Promise<Initial> => {
+		return ask<Initial>({
+			type: "select",
+			name: "c0",
+			message: "Select a command:",
+			choices: choices<Initial>(["download", "list", "artifactory", "version"]),
+		});
+	};
+
+	const action = async (command: Initial) => {
+		switch (command) {
+			case "artifactory":
+				await artifactory.action();
+				break;
+			case "list":
+				await list.action();
+				break;
+			case "download":
+				await download.action()
+				break;
+			case "version":
+				await version.action()
+				break;
+		}
+	};
+
+	await action(await question())
 };
 
 main();

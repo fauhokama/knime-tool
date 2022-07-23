@@ -1,9 +1,9 @@
 import { yellow } from "kleur/colors";
-import { EXTENSIONS } from "../constants";
-import { getExecutable } from "../util/ap";
-import { ask } from "../util/ask";
-import { choices } from "../util/choices";
-import { shellCmd } from "../util/shellCmd";
+import { EXTENSIONS } from "../../constants";
+import { getExecutable } from "../../util/ap";
+import { ask } from "../../util/ask";
+import { choices } from "../../util/choices";
+import { shellCmd } from "../../util/shellCmd";
 
 const question = async (): Promise<string[]> => {
 	return ask({

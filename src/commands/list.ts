@@ -4,8 +4,33 @@ import { getAbsolutePath, openAP } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
 import { remove } from "../util/decompress";
-import extension from "./extension";
-import knimeIni from "./knimeIni";
+import extension from "./subcommands/extension";
+import knimeIni from "./subcommands/knimeIni";
+
+
+const action = async () => {
+	const ap = await question1();
+	const action = await question2();
+
+	const absolutePath = getAbsolutePath(ap);
+
+	switch (action) {
+		case "open":
+			openAP(ap);
+			break;
+		case "extension":
+			const ee = await extension.question();
+			await extension.action(ap, REPOSITORIES, ee);
+			break;
+		case "knimeIni":
+			const kk = await knimeIni.question();
+			await knimeIni.action(ap, kk);
+			break;
+		case "remove":
+			remove(ap);
+			break;
+	}
+};
 
 const question1 = async () => {
 	const answer = await ask<string>({
@@ -31,36 +56,9 @@ const question2 = async () => {
 	});
 };
 
-const question = async () => {
-	const ap = await question1();
-	const action = await question2();
-	return { ap, action };
-};
-
-export const action = async (q: { ap: string; action: Action }) => {
-	const ap = getAbsolutePath(q.ap);
-
-	switch (q.action) {
-		case "open":
-			openAP(ap);
-			break;
-		case "extension":
-			const ee = await extension.question();
-			await extension.action(ap, REPOSITORIES, ee);
-			break;
-		case "knimeIni":
-			const kk = await knimeIni.question();
-			await knimeIni.action(ap, kk);
-			break;
-		case "remove":
-			remove(ap);
-			break;
-	}
-};
-
 const filterAp = (file: string) => {
 	if (file.endsWith(".app")) return file;
 	if (file.startsWith("knime_")) return file;
 };
 
-export default { question, action };
+export default { action };

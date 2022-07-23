@@ -1,8 +1,25 @@
 import axios from "axios";
+import { cyan } from "kleur";
 import { PromptObject } from "prompts";
-import { ARTIFACTORY_API_URL } from "../constants";
+import { ARTIFACTORY_API_URL, ARTIFACTORY_DOWNLOAD_URL } from "../constants";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
+import { rerunArtifactory } from "../util/rerun";
+import { __ap } from "../util/__ap";
+import extension from "./subcommands/extension";
+import knimeIni from "./subcommands/knimeIni";
+
+const action = async () => {
+	const answer = await question();
+	const extensions = await extension.question();
+	const knimeini = await knimeIni.question();
+
+	const url = `${ARTIFACTORY_DOWNLOAD_URL}/${answer.join("/")}`;
+	const open = await __ap(url, extensions, knimeini)
+
+	console.log(cyan("Rerun this command:"));
+	console.log(rerunArtifactory(answer, extensions, knimeini, open));
+}
 
 const question = async (answers: any[] = [], index = 1): Promise<string[]> => {
 	const { data } = await axios.get(`${ARTIFACTORY_API_URL}/${answers.join("/")}`);
@@ -27,4 +44,4 @@ const question = async (answers: any[] = [], index = 1): Promise<string[]> => {
 };
 
 
-export default { question };
+export default { action };

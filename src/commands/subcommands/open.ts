@@ -1,4 +1,4 @@
-import { ask } from "../util/ask";
+import { ask } from "../../util/ask";
 
 const question = async () => {
     return ask<boolean>({
