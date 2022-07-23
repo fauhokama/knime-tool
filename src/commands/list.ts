@@ -16,18 +16,18 @@ const action = async () => {
 
 	switch (action) {
 		case "open":
-			openAP(ap);
+			openAP(absolutePath);
 			break;
 		case "extension":
 			const ee = await extension.question();
-			await extension.action(ap, REPOSITORIES, ee);
+			await extension.action(absolutePath, REPOSITORIES, ee);
 			break;
 		case "knimeIni":
 			const kk = await knimeIni.question();
-			await knimeIni.action(ap, kk);
+			await knimeIni.action(absolutePath, kk);
 			break;
 		case "remove":
-			remove(ap);
+			remove(absolutePath);
 			break;
 	}
 };
