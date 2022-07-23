@@ -1,8 +1,8 @@
 import { cyan } from "kleur/colors";
 import { DOWNLOAD_FOLDER } from "../constants";
 import { getAbsolutePath } from "./ap";
-import decompress from "./decompress";
-import download from "./download";
+import decompress from "./common/decompress";
+import download from "./common/download";
 
 export const downloadAndDecompress = async (url: string) => {
     console.log(`${cyan(`Downloading from URL:`)} ${url}`);

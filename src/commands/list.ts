@@ -3,7 +3,7 @@ import { DOWNLOAD_FOLDER, REPOSITORIES } from "../constants";
 import { getAbsolutePath, openAP } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
-import { remove } from "../util/decompress";
+import { remove } from "../util/common/remove";
 import extension from "./subcommands/extension";
 import knimeIni from "./subcommands/knimeIni";
 
