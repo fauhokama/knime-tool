@@ -3,24 +3,23 @@ import { bold, cyan, yellow } from "kleur/colors";
 import { override } from "prompts";
 import initial from "./commands/initial";
 import { CONFIG_FILE, DOWNLOAD_FOLDER } from "./constants";
+import { ask } from "./util/ask";
 import { parseArgs } from "./util/parseArgs";
+import { choices } from "./util/choices";
+import { printInitialWelcome } from "./util/print";
 
-const main = async (args: string[]) => {
-	if (!existsSync(DOWNLOAD_FOLDER)) {
-		mkdirSync(DOWNLOAD_FOLDER);
-	}
+const main = async () => {
 
-	console.log(`
- --------------------------
-|                          |
-|       ${yellow("▲")} ${bold("KNIME Tool")}       |
-|                          |
- --------------------------
-`);
-	console.log(`${cyan("Configuration file on")}: ${CONFIG_FILE}`);
-	console.log(`${cyan("AP's will be downloaded in")}: ${DOWNLOAD_FOLDER}`);
-	override(parseArgs(args));
+	// Creates Download folder if it does not exists.
+	if (!existsSync(DOWNLOAD_FOLDER)) mkdirSync(DOWNLOAD_FOLDER);
+
+	printInitialWelcome()
+
+	
+	override(process.argv);
+
 	await initial.action(await initial.question());
+
 };
 
-main(process.argv);
+main();
