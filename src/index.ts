@@ -5,8 +5,8 @@ import download from "./commands/download";
 import list from "./commands/list";
 import version from "./commands/version";
 import { DOWNLOAD_FOLDER } from "./constants";
-import { ask } from "./util/ask";
-import { choices } from "./util/choices";
+import { ask } from "./util/prompt/ask";
+import { choices } from "./util/prompt/choices";
 import { printInitialWelcome } from "./util/print";
 
 const main = async () => {

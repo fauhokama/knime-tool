@@ -1,14 +1,14 @@
 import { cyan } from "kleur";
 import { DOWNLOAD_URL } from "../constants";
-import { openAP, Os } from "../util/ap";
-import { ask } from "../util/ask";
-import { choices } from "../util/choices";
-import { osQuestion } from "../util/osQuestion";
+import { openAP } from "../util/ap";
+import { ask } from "../util/prompt/ask";
+import { choices } from "../util/prompt/choices";
 import { rerunDownload } from "../util/rerun";
 import { __ap } from "../util/__ap";
 import extension from "./subcommands/extension";
 import knimeIni from "./subcommands/knimeIni";
 import open from "./subcommands/open";
+import os, { Os } from "./subcommands/os";
 
 export type NightlyOrStandard = "nightly" | "standard";
 
@@ -37,9 +37,7 @@ const question = async () => {
 		choices: choices<NightlyOrStandard>(["nightly", "standard"]),
 	});
 
-	const os = await osQuestion("c2");
-
-	return { os, version };
+	return { os: await os.question("c2"), version };
 };
 
 const createDownloadURL = (version: NightlyOrStandard, os: Os) => {

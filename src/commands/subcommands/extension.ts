@@ -1,8 +1,8 @@
 import { yellow } from "kleur/colors";
 import { EXTENSIONS } from "../../constants";
 import { getFullPathToExecutable } from "../../util/ap";
-import { ask } from "../../util/ask";
-import { choices } from "../../util/choices";
+import { ask } from "../../util/prompt/ask";
+import { choices } from "../../util/prompt/choices";
 import { shellCmd } from "../../util/shellCmd";
 
 const question = async (): Promise<string[]> => {

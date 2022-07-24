@@ -2,8 +2,8 @@ import { appendFileSync } from "fs";
 import { cyan, yellow } from "kleur/colors";
 import { KNIMEINI } from "../../constants";
 import { getKnimeIniPath } from "../../util/ap";
-import { ask } from "../../util/ask";
-import { choices } from "../../util/choices";
+import { ask } from "../../util/prompt/ask";
+import { choices } from "../../util/prompt/choices";
 
 const question = async () => {
 	return ask<string[]>({

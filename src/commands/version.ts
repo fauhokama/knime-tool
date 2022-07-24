@@ -1,14 +1,14 @@
 import { cyan } from "kleur";
 import { VERSIONS } from "../constants";
-import { openAP, Os } from "../util/ap";
-import { ask } from "../util/ask";
-import { choices } from "../util/choices";
-import { osQuestion } from "../util/osQuestion";
+import { openAP } from "../util/ap";
+import { ask } from "../util/prompt/ask";
+import { choices } from "../util/prompt/choices";
 import { rerunVersion } from "../util/rerun";
 import { __ap } from "../util/__ap";
 import extension from "./subcommands/extension";
 import knimeIni from "./subcommands/knimeIni";
 import open from "./subcommands/open";
+import os, { Os } from "./subcommands/os";
 
 const action = async () => {
     const answer = await question()
@@ -35,9 +35,7 @@ const question = async () => {
         choices: choices(VERSIONS),
     });
 
-    const os = await osQuestion("c2");
-
-    return { version, os };
+    return { os: await os.question("c2"), version };
 };
 
 const createVersionURL = (os: Os, version: string): string => {
@@ -48,6 +46,9 @@ const createVersionURL = (os: Os, version: string): string => {
             return `https://download.knime.org/analytics-platform/macosx/knime_${version}.app.macosx.cocoa.x86_64.dmg`
         case "win":
             return `https://download.knime.org/analytics-platform/win/knime_${version}.win32.win32.x86_64.zip`
+        default:
+            throw new Error("Something went wrong.");
+
     }
 }
 
