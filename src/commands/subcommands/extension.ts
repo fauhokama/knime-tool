@@ -1,6 +1,6 @@
 import { yellow } from "kleur/colors";
 import { EXTENSIONS } from "../../constants";
-import { getExecutable } from "../../util/ap";
+import { getFullPathToExecutable } from "../../util/ap";
 import { ask } from "../../util/ask";
 import { choices } from "../../util/choices";
 import { shellCmd } from "../../util/shellCmd";
@@ -24,13 +24,12 @@ const action = async (ap: string, repositories: string[], extensions: string[]) 
 		return;
 	}
 
-	const pathToExecutable = (ap + getExecutable(ap)).replace(/(\s+)/g, "\\$1");
-
-	const repos = formatRepositories(repositories);
+	const pathToExecutable = getFullPathToExecutable(ap);
+	const repos = formatRepositories(repositories)
 	const exts = formatExtensions(extensions);
 	const args = ` -nosplash -application org.eclipse.equinox.p2.director ${repos} ${exts}`;
-
 	const cmd = `${pathToExecutable} ${args}`;
+
 	shellCmd(cmd, false);
 };
 

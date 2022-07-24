@@ -27,9 +27,9 @@ const getPathToExecutable = (os: Os) => {
 	return exe;
 };
 
-export const getExecutable = (ap: string) => {
+export const getFullPathToExecutable = (ap: string) => {
 	const os = getOsFromApDirectory(ap);
-	return getPathToExecutable(os);
+	return ap + getPathToExecutable(os).replace(/(\s+)/g, "\\$1");
 };
 
 export const getAbsolutePath = (file: string) => {
@@ -42,6 +42,6 @@ export const getKnimeIniPath = (ap: string) => {
 };
 
 export const openAP = (ap: string) => {
-	const pathToExecutable = (ap + getExecutable(ap)).replace(/(\s+)/g, "\\$1");
+	const pathToExecutable = (ap + getFullPathToExecutable(ap)).replace(/(\s+)/g, "\\$1");
 	shellCmd(pathToExecutable, true);
 }
