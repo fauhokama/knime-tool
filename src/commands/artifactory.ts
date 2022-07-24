@@ -2,23 +2,30 @@ import axios from "axios";
 import { cyan } from "kleur";
 import { PromptObject } from "prompts";
 import { ARTIFACTORY_API_URL, ARTIFACTORY_DOWNLOAD_URL } from "../constants";
+import { openAP } from "../util/ap";
 import { ask } from "../util/ask";
 import { choices } from "../util/choices";
 import { rerunArtifactory } from "../util/rerun";
 import { __ap } from "../util/__ap";
 import extension from "./subcommands/extension";
 import knimeIni from "./subcommands/knimeIni";
+import open from "./subcommands/open";
 
 const action = async () => {
 	const answer = await question();
 	const extensions = await extension.question();
 	const knimeini = await knimeIni.question();
 
-	const url = `${ARTIFACTORY_DOWNLOAD_URL}/${answer.join("/")}`;
-	const open = await __ap(url, extensions, knimeini)
+	const url = createArtifactoryURL(answer)
+
+	const absolutePath = await __ap(url, extensions, knimeini)
+
+	const shouldOpen = await open.question();
 
 	console.log(cyan("Rerun this command:"));
-	console.log(rerunArtifactory(answer, extensions, knimeini, open));
+	console.log(rerunArtifactory(answer, extensions, knimeini, shouldOpen));
+
+	if (shouldOpen) openAP(absolutePath);
 }
 
 const question = async (answers: any[] = [], index = 1): Promise<string[]> => {
@@ -43,5 +50,8 @@ const question = async (answers: any[] = [], index = 1): Promise<string[]> => {
 	return question(answers, index);
 };
 
+const createArtifactoryURL = (artifactoryPath: string[]) => {
+	return `${ARTIFACTORY_DOWNLOAD_URL}/${artifactoryPath.join("/")}`;
+}
 
 export default { action };
