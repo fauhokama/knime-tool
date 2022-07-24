@@ -1,5 +1,5 @@
 import { NightlyOrStandard } from "../commands/download";
-import { Os } from "./ap";
+import { Os } from "../commands/subcommands/os";
 
 const formatArt = (arr: string[]) => arr.join(" ");
 const formatExtensions = (arr: string[]) => {
