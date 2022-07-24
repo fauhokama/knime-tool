@@ -3,7 +3,7 @@ import { EXTENSIONS } from "../../constants";
 import { getFullPathToExecutable } from "../../util/ap";
 import { ask } from "../../util/prompt/ask";
 import { choices } from "../../util/prompt/choices";
-import { shellCmd } from "../../util/shellCmd";
+import { shellCmd } from "../../util/common/shellCmd";
 
 const question = async (): Promise<string[]> => {
 	return ask({

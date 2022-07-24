@@ -1,7 +1,7 @@
 import { readdirSync } from "fs";
 import { Os } from "../commands/subcommands/os";
 import { DOWNLOAD_FOLDER } from "../constants";
-import { shellCmd } from "./shellCmd";
+import { shellCmd } from "./common/shellCmd";
 
 const getOsFromApDirectory = (ap: string): Os => {
 	if (ap.endsWith(".app")) return "macosx";
