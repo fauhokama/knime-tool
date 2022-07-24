@@ -1,4 +1,4 @@
-import { Version } from "../commands/download";
+import { NightlyOrStandard } from "../commands/download";
 import { Os } from "./ap";
 
 const formatArt = (arr: string[]) => arr.join(" ");
@@ -16,7 +16,7 @@ const formatKnimeIni = (arr: string[]) => {
 	return ret;
 };
 
-const formatDownload = (obj: { os: Os; version: Version }) => {
+const formatDownload = (obj: { os: Os; version: NightlyOrStandard }) => {
 	return `${obj.version} ${obj.os}`;
 };
 
@@ -33,7 +33,7 @@ const formatFlags = (e: string[], k: string[], o: boolean) => {
 	return `${formatExtensions(e)} ${formatKnimeIni(k)} ${formatOpen(o)}`
 }
 
-export const rerunDownload = (obj: { os: Os; version: Version }, e: string[], k: string[], o: boolean) => {
+export const rerunDownload = (obj: { os: Os; version: NightlyOrStandard }, e: string[], k: string[], o: boolean) => {
 	return `kt download ${formatDownload(obj)} ${formatFlags(e, k, o)}
 	`;
 };

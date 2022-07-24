@@ -9,8 +9,8 @@ import knimeIni from "./subcommands/knimeIni";
 
 
 const action = async () => {
-	const ap = await question1();
-	const action = await question2();
+	const ap = await question1_AP();
+	const action = await question2_action();
 
 	const absolutePath = getAbsolutePath(ap);
 
@@ -19,12 +19,12 @@ const action = async () => {
 			openAP(absolutePath);
 			break;
 		case "extension":
-			const ee = await extension.question();
-			await extension.action(absolutePath, REPOSITORIES, ee);
+			const extensions = await extension.question();
+			await extension.action(absolutePath, REPOSITORIES, extensions);
 			break;
 		case "knimeIni":
-			const kk = await knimeIni.question();
-			await knimeIni.action(absolutePath, kk);
+			const knimeIniArgs = await knimeIni.question();
+			await knimeIni.action(absolutePath, knimeIniArgs);
 			break;
 		case "remove":
 			remove(absolutePath);
@@ -32,7 +32,7 @@ const action = async () => {
 	}
 };
 
-const question1 = async () => {
+const question1_AP = async () => {
 	const answer = await ask<string>({
 		type: "select",
 		name: "c1",
@@ -47,7 +47,7 @@ const question1 = async () => {
 };
 
 type Action = "open" | "remove" | "extension" | "knimeIni";
-const question2 = async () => {
+const question2_action = async () => {
 	return ask<Action>({
 		type: "select",
 		name: "c2",
