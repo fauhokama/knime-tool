@@ -1,9 +1,8 @@
 import { yellow } from "kleur/colors";
 import { EXTENSIONS, EXTENSION_ID } from "../../constants";
-import { getFullPathToExecutable } from "../../util/ap";
+import { openAP } from "../../util/ap";
 import { ask } from "../../util/prompt/ask";
 import { choices } from "../../util/prompt/choices";
-import { shellCmd } from "../../util/common/shellCmd";
 
 const question = async (): Promise<string[]> => {
 	return ask({
@@ -24,13 +23,11 @@ const action = async (ap: string, repositories: string[], extensions: string[]) 
 		return;
 	}
 
-	const pathToExecutable = getFullPathToExecutable(ap);
 	const repos = formatRepositories(repositories)
 	const exts = formatExtensions(extensions);
-	const args = ` -nosplash -application org.eclipse.equinox.p2.director ${repos} ${exts}`;
-	const cmd = `${pathToExecutable} ${args}`;
+	const args = `-nosplash -application org.eclipse.equinox.p2.director ${repos} ${exts}`;
 
-	shellCmd(cmd, false);
+	openAP(ap, args);
 };
 
 const formatRepositories = (repositories: string[]) => {

@@ -28,7 +28,7 @@ const getPathToExecutable = (os: Os) => {
 
 export const getFullPathToExecutable = (ap: string) => {
 	const os = getOsFromApDirectory(ap);
-	return ap + getPathToExecutable(os).replace(/(\s+)/g, "\\$1");
+	return ap + getPathToExecutable(os);
 };
 
 export const getAbsolutePath = (file: string) => {
@@ -40,7 +40,10 @@ export const getKnimeIniPath = (ap: string) => {
 	return os === "macosx" ? "/Contents/Eclipse/knime.ini" : "/knime.ini";
 };
 
-export const openAP = (ap: string) => {
-	const pathToExecutable = (ap + getFullPathToExecutable(ap)).replace(/(\s+)/g, "\\$1");
+export const openAP = (ap: string, args?: string) => {
+	let pathToExecutable = (getFullPathToExecutable(ap)).replace(/(\s+)/g, "\\$1");
+
+	if (args) pathToExecutable += ` ${args}`
+
 	shellCmd(pathToExecutable, true);
 }
