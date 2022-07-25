@@ -1,13 +1,38 @@
 import { readdirSync } from "fs";
 import { DOWNLOAD_FOLDER, REPOSITORIES } from "../constants";
-import { getAbsolutePath, openAP } from "../util/ap";
-import { ask } from "../util/ask";
-import { choices } from "../util/choices";
-import { remove } from "../util/decompress";
-import extension from "./extension";
-import knimeIni from "./knimeIni";
+import { prefixDownloadFolder, openAP } from "../util/ap";
+import { ask } from "../util/prompt/ask";
+import { choices } from "../util/prompt/choices";
+import { remove } from "../util/common/remove";
+import extension from "./subcommands/extension";
+import knimeIni from "./subcommands/knimeIni";
 
-const question1 = async () => {
+
+const action = async () => {
+	const ap = await question1_AP();
+	const action = await question2_action();
+
+	const absolutePath = prefixDownloadFolder(ap);
+
+	switch (action) {
+		case "open":
+			openAP(absolutePath);
+			break;
+		case "extension":
+			const extensions = await extension.question();
+			await extension.action(absolutePath, REPOSITORIES, extensions);
+			break;
+		case "knimeIni":
+			const knimeIniArgs = await knimeIni.question();
+			await knimeIni.action(absolutePath, knimeIniArgs);
+			break;
+		case "remove":
+			remove(absolutePath);
+			break;
+	}
+};
+
+const question1_AP = async () => {
 	const answer = await ask<string>({
 		type: "select",
 		name: "c1",
@@ -22,7 +47,7 @@ const question1 = async () => {
 };
 
 type Action = "open" | "remove" | "extension" | "knimeIni";
-const question2 = async () => {
+const question2_action = async () => {
 	return ask<Action>({
 		type: "select",
 		name: "c2",
@@ -31,36 +56,9 @@ const question2 = async () => {
 	});
 };
 
-const question = async () => {
-	const ap = await question1();
-	const action = await question2();
-	return { ap, action };
-};
-
-export const action = async (q: { ap: string; action: Action }) => {
-	const ap = getAbsolutePath(q.ap);
-
-	switch (q.action) {
-		case "open":
-			openAP(ap);
-			break;
-		case "extension":
-			const ee = await extension.question();
-			await extension.action(ap, REPOSITORIES, ee);
-			break;
-		case "knimeIni":
-			const kk = await knimeIni.question();
-			await knimeIni.action(ap, kk);
-			break;
-		case "remove":
-			remove(ap);
-			break;
-	}
-};
-
 const filterAp = (file: string) => {
 	if (file.endsWith(".app")) return file;
 	if (file.startsWith("knime_")) return file;
 };
 
-export default { question, action };
+export default { action };

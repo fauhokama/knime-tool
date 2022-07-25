@@ -1,20 +1,19 @@
 import { yellow } from "kleur/colors";
-import { EXTENSIONS } from "../constants";
-import { getExecutable } from "../util/ap";
-import { ask } from "../util/ask";
-import { choices } from "../util/choices";
-import { shellCmd } from "../util/shellCmd";
+import { EXTENSIONS, EXTENSION_ID } from "../../constants";
+import { openAP } from "../../util/ap";
+import { ask } from "../../util/prompt/ask";
+import { choices } from "../../util/prompt/choices";
 
 const question = async (): Promise<string[]> => {
 	return ask({
 		type: "multiselect",
-		name: `e`,
+		name: EXTENSION_ID,
 		message: "Select AP Extensions:",
 		choices: choices(EXTENSIONS),
 	});
 };
 
-const action = async (ap: string, repositories: string[], extensions: string[]) => {
+const action = async (apDirectoryFullPath: string, repositories: string[], extensions: string[]) => {
 	if (extensions.length === 0) {
 		console.log(yellow("No extensions selected"));
 		return;
@@ -24,14 +23,11 @@ const action = async (ap: string, repositories: string[], extensions: string[]) 
 		return;
 	}
 
-	const pathToExecutable = (ap + getExecutable(ap)).replace(/(\s+)/g, "\\$1");
-
-	const repos = formatRepositories(repositories);
+	const repos = formatRepositories(repositories)
 	const exts = formatExtensions(extensions);
-	const args = ` -nosplash -application org.eclipse.equinox.p2.director ${repos} ${exts}`;
+	const args = `-nosplash -application org.eclipse.equinox.p2.director ${repos} ${exts}`;
 
-	const cmd = `${pathToExecutable} ${args}`;
-	shellCmd(cmd, false);
+	openAP(apDirectoryFullPath, args);
 };
 
 const formatRepositories = (repositories: string[]) => {

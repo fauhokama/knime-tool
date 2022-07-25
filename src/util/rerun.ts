@@ -1,27 +1,47 @@
-import { Version } from "../commands/download";
-import { Os } from "./ap";
+import { DownloadAnswer, NightlyOrStandard } from "../commands/download";
+import { Os } from "../commands/subcommands/os";
+import { VersionAnswer } from "../commands/version";
 
-const formatArt = (arr: string[]) => arr.join(" ");
-const formatExtensions = (arr: string[]) => {
-	let ret: string = "";
-	arr.forEach((e) => (ret += ` --extension=${e}`));
-	if (arr.length === 0) return ` --extension=`;
-	return ret;
+export const rerunDownload = (downloadAnswer: DownloadAnswer, extensions: string[], knimeIni: string[], open: boolean) => {
+	return `kt download ${formatDownload(downloadAnswer)} ${formatFlags(extensions, knimeIni, open)}
+	`;
 };
 
-const formatKnimeIni = (arr: string[]) => {
-	let ret: string = "";
-	arr.forEach((e) => (ret += ` --knimeini=${e}`));
-	if (arr.length === 0) return ` --knimeini=`;
-	return ret;
+export const rerunArtifactory = (artifactoryAnswer: string[], extensions: string[], knimeIni: string[], open: boolean) => {
+	return `kt artifactory ${formatArtifactory(artifactoryAnswer)} ${formatFlags(extensions, knimeIni, open)}
+	`;
 };
 
-const formatDownload = (obj: { os: Os; version: Version }) => {
-	return `${obj.version} ${obj.os}`;
+export const rerunVersion = (versionAnswer: VersionAnswer, extensions: string[], knimeIni: string[], open: boolean) => {
+	return `kt version ${formatVersion(versionAnswer)} ${formatFlags(extensions, knimeIni, open)}
+	`;
+}
+
+
+const formatArtifactory = (artifactoryAnswer: string[]): string => artifactoryAnswer.join(" ");
+
+const formatExtensions = (extensions: string[]): string => {
+	if (extensions.length === 0) return ` --extension=`;
+
+	let formattedExtensions: string = "";
+	extensions.forEach((e) => (formattedExtensions += ` --extension=${e}`));
+	return formattedExtensions;
 };
 
-const formatVersion = (obj: { os: Os; version: string }) => {
-	return `${obj.version} ${obj.os}`;
+const formatKnimeIni = (knimeIniArgs: string[]) => {
+	if (knimeIniArgs.length === 0) return ` --knimeini=`;
+
+	let formattedKnimeIniArgs: string = "";
+	knimeIniArgs.forEach((e) => (formattedKnimeIniArgs += ` --knimeini=${e}`));
+	return formattedKnimeIniArgs;
+};
+
+const formatDownload = (downloadAnswer: { os: Os; version: NightlyOrStandard }) => {
+	return `${downloadAnswer.version} ${downloadAnswer.os}`;
+};
+
+const formatVersion = (versionAnswer: { os: Os; version: string }) => {
+	return `${versionAnswer.version} ${versionAnswer.os}`;
 };
 
 const formatOpen = (o: boolean) => {
@@ -29,21 +49,6 @@ const formatOpen = (o: boolean) => {
 	else return " --open=false"
 }
 
-const formatFlags = (e: string[], k: string[], o: boolean) => {
-	return `${formatExtensions(e)} ${formatKnimeIni(k)} ${formatOpen(o)}`
-}
-
-export const rerunDownload = (obj: { os: Os; version: Version }, e: string[], k: string[], o: boolean) => {
-	return `kt download ${formatDownload(obj)} ${formatFlags(e, k, o)}
-	`;
-};
-
-export const rerunArtifactory = (a: string[], e: string[], k: string[], o: boolean) => {
-	return `kt artifactory ${formatArt(a)} ${formatFlags(e, k, o)}
-	`;
-};
-
-export const rerunVersion = (obj: { os: Os; version: string }, e: string[], k: string[], o: boolean) => {
-	return `kt version ${formatVersion(obj)} ${formatFlags(e, k, o)}
-	`;
+const formatFlags = (extensions: string[], knimeIni: string[], open: boolean) => {
+	return `${formatExtensions(extensions)} ${formatKnimeIni(knimeIni)} ${formatOpen(open)}`
 }

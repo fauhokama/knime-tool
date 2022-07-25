@@ -1,16 +1,16 @@
 const Downloader = require("nodejs-file-downloader");
 
-export default async (url: string, directory: string): Promise<string | undefined> => {
+export default async (url: string, destinationFullPath: string): Promise<string | undefined> => {
 	let filename;
 	const downloader = new Downloader({
 		url,
-		directory,
+		directory: destinationFullPath,
 		maxAttempts: 3,
-		onProgress: (percentage: string, _: string, remainingSize: string) => {
-			process.stdout.clearLine(0);
-			process.stdout.cursorTo(0);
-			process.stdout.write(`${percentage}%	Remaining bytes:${remainingSize}`);
-		},
+		// onProgress: (percentage: string, _: string, remainingSize: string) => {
+		// 	process.stdout.clearLine(0);
+		// 	process.stdout.cursorTo(0);
+		// 	process.stdout.write(`${percentage}%	Remaining bytes:${remainingSize}`);
+		// },
 		skipExistingFileName: true,
 		onBeforeSave: (deducedName: string) => {
 			filename = deducedName;

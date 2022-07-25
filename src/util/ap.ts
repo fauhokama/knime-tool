@@ -1,47 +1,45 @@
 import { readdirSync } from "fs";
+import { Os } from "../commands/subcommands/os";
 import { DOWNLOAD_FOLDER } from "../constants";
-import { shellCmd } from "./shellCmd";
+import { shellCmd } from "./common/shellCmd";
 
-export type Os = "linux" | "macosx" | "win";
-
-const getOsFromApDirectory = (ap: string): Os => {
-	if (ap.endsWith(".app")) return "macosx";
-	const files = readdirSync(ap);
+const getOsFromApDirectory = (apDirectoryFullPath: string): Os => {
+	if (apDirectoryFullPath.endsWith(".app")) return "macosx";
+	const files = readdirSync(apDirectoryFullPath);
 	if (files.includes("knime.exe")) return "win";
 	return "linux";
 };
 
+const getFullPathToExecutable = (apDirectoryFullPath: string) => {
+	const os = getOsFromApDirectory(apDirectoryFullPath);
+	return apDirectoryFullPath + getPathToExecutable(os);
+};
+
 const getPathToExecutable = (os: Os) => {
-	let exe;
 	switch (os) {
 		case "macosx":
-			exe = "/Contents/MacOS/knime";
-			break;
+			return "/Contents/MacOS/knime";
 		case "win":
-			exe = "/knime.exe";
-			break;
+			return "/knime.exe";
 		case "linux":
-			exe = "/knime";
-			break;
+			return "/knime";
 	}
-	return exe;
 };
 
-export const getExecutable = (ap: string) => {
-	const os = getOsFromApDirectory(ap);
-	return getPathToExecutable(os);
-};
 
-export const getAbsolutePath = (file: string) => {
+export const prefixDownloadFolder = (file: string) => {
 	return `${DOWNLOAD_FOLDER}/${file}`;
 };
 
-export const getKnimeIniPath = (ap: string) => {
-	const os = getOsFromApDirectory(ap);
+export const getKnimeIniPath = (apDirectoryFullPath: string) => {
+	const os = getOsFromApDirectory(apDirectoryFullPath);
 	return os === "macosx" ? "/Contents/Eclipse/knime.ini" : "/knime.ini";
 };
 
-export const openAP = (ap: string) => {
-	const pathToExecutable = (ap + getExecutable(ap)).replace(/(\s+)/g, "\\$1");
-	shellCmd(pathToExecutable, true);
+export const openAP = (apDirectory: string, args?: string) => {
+	let fullPathToExecutable = (getFullPathToExecutable(apDirectory)).replace(/(\s+)/g, "\\$1");
+
+	if (args) fullPathToExecutable += ` ${args}`
+
+	shellCmd(fullPathToExecutable, true);
 }

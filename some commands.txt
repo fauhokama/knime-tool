@@ -1,0 +1,12 @@
+kt artifactory standard master 1985 macosx knime.dmg --extensions= --knimeini= --open=true
+kt artifactory standard releases 2022-09 30 linux knime.dmg --extensions= --knimeini= --open=true
+kt download nightly macosx
+kt download standard linux
+kt version 4.4.4 macosx
+kt version 4.6.1 macosx
+
+kt list knime.app open
+kt list knime.app extension --knimeIni=
+kt list knime.app knimeini --extension=
+kt list knime.app remove
+
