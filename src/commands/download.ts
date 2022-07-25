@@ -11,13 +11,17 @@ import open from "./subcommands/open";
 import os, { Os } from "./subcommands/os";
 
 export type NightlyOrStandard = "nightly" | "standard";
+export type DownloadAnswer = {
+	os: Os,
+	version: NightlyOrStandard
+}
 
 const action = async () => {
 	const answer = await question();
 	const extensions = await extension.question();
 	const knimeini = await knimeIni.question();
 
-	const url = createDownloadURL(answer.version, answer.os)
+	const url = createDownloadURL(answer)
 
 	const absolutePath = await __ap(url, extensions, knimeini)
 
@@ -29,7 +33,7 @@ const action = async () => {
 	if (shouldOpen) openAP(absolutePath);
 }
 
-const question = async () => {
+const question = async (): Promise<DownloadAnswer> => {
 	const version = await ask<NightlyOrStandard>({
 		type: "select",
 		name: "c1",
@@ -40,8 +44,8 @@ const question = async () => {
 	return { os: await os.question("c2"), version };
 };
 
-const createDownloadURL = (version: NightlyOrStandard, os: Os) => {
-	return DOWNLOAD_URL[version][os];
+const createDownloadURL = (downloadAnswer: DownloadAnswer) => {
+	return DOWNLOAD_URL[downloadAnswer.version][downloadAnswer.os];
 
 }
 
