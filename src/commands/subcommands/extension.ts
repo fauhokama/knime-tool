@@ -13,7 +13,7 @@ const question = async (): Promise<string[]> => {
 	});
 };
 
-const action = async (ap: string, repositories: string[], extensions: string[]) => {
+const action = async (apDirectoryFullPath: string, repositories: string[], extensions: string[]) => {
 	if (extensions.length === 0) {
 		console.log(yellow("No extensions selected"));
 		return;
@@ -27,7 +27,7 @@ const action = async (ap: string, repositories: string[], extensions: string[]) 
 	const exts = formatExtensions(extensions);
 	const args = `-nosplash -application org.eclipse.equinox.p2.director ${repos} ${exts}`;
 
-	openAP(ap, args);
+	openAP(apDirectoryFullPath, args);
 };
 
 const formatRepositories = (repositories: string[]) => {

@@ -1,6 +1,6 @@
 import { readdirSync } from "fs";
 import { DOWNLOAD_FOLDER, REPOSITORIES } from "../constants";
-import { getAbsolutePath, openAP } from "../util/ap";
+import { prefixDownloadFolder, openAP } from "../util/ap";
 import { ask } from "../util/prompt/ask";
 import { choices } from "../util/prompt/choices";
 import { remove } from "../util/common/remove";
@@ -12,7 +12,7 @@ const action = async () => {
 	const ap = await question1_AP();
 	const action = await question2_action();
 
-	const absolutePath = getAbsolutePath(ap);
+	const absolutePath = prefixDownloadFolder(ap);
 
 	switch (action) {
 		case "open":

@@ -3,47 +3,43 @@ import { Os } from "../commands/subcommands/os";
 import { DOWNLOAD_FOLDER } from "../constants";
 import { shellCmd } from "./common/shellCmd";
 
-const getOsFromApDirectory = (ap: string): Os => {
-	if (ap.endsWith(".app")) return "macosx";
-	const files = readdirSync(ap);
+const getOsFromApDirectory = (apDirectoryFullPath: string): Os => {
+	if (apDirectoryFullPath.endsWith(".app")) return "macosx";
+	const files = readdirSync(apDirectoryFullPath);
 	if (files.includes("knime.exe")) return "win";
 	return "linux";
 };
 
+const getFullPathToExecutable = (apDirectoryFullPath: string) => {
+	const os = getOsFromApDirectory(apDirectoryFullPath);
+	return apDirectoryFullPath + getPathToExecutable(os);
+};
+
 const getPathToExecutable = (os: Os) => {
-	let exe;
 	switch (os) {
 		case "macosx":
-			exe = "/Contents/MacOS/knime";
-			break;
+			return "/Contents/MacOS/knime";
 		case "win":
-			exe = "/knime.exe";
-			break;
+			return "/knime.exe";
 		case "linux":
-			exe = "/knime";
-			break;
+			return "/knime";
 	}
-	return exe;
 };
 
-export const getFullPathToExecutable = (ap: string) => {
-	const os = getOsFromApDirectory(ap);
-	return ap + getPathToExecutable(os);
-};
 
-export const getAbsolutePath = (file: string) => {
+export const prefixDownloadFolder = (file: string) => {
 	return `${DOWNLOAD_FOLDER}/${file}`;
 };
 
-export const getKnimeIniPath = (ap: string) => {
-	const os = getOsFromApDirectory(ap);
+export const getKnimeIniPath = (apDirectoryFullPath: string) => {
+	const os = getOsFromApDirectory(apDirectoryFullPath);
 	return os === "macosx" ? "/Contents/Eclipse/knime.ini" : "/knime.ini";
 };
 
-export const openAP = (ap: string, args?: string) => {
-	let pathToExecutable = (getFullPathToExecutable(ap)).replace(/(\s+)/g, "\\$1");
+export const openAP = (apDirectory: string, args?: string) => {
+	let fullPathToExecutable = (getFullPathToExecutable(apDirectory)).replace(/(\s+)/g, "\\$1");
 
-	if (args) pathToExecutable += ` ${args}`
+	if (args) fullPathToExecutable += ` ${args}`
 
-	shellCmd(pathToExecutable, true);
+	shellCmd(fullPathToExecutable, true);
 }
