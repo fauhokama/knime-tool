@@ -1,6 +1,6 @@
 import { appendFileSync } from "fs";
 import { cyan, yellow } from "kleur/colors";
-import { KNIMEINI } from "../../constants";
+import { KNIMEINI, KNIME_INI_ID } from "../../constants";
 import { getKnimeIniPath } from "../../util/ap";
 import { ask } from "../../util/prompt/ask";
 import { choices } from "../../util/prompt/choices";
@@ -8,7 +8,7 @@ import { choices } from "../../util/prompt/choices";
 const question = async () => {
 	return ask<string[]>({
 		type: "multiselect",
-		name: "k",
+		name: KNIME_INI_ID,
 		message: "Select Args:",
 		choices: choices(KNIMEINI),
 	});

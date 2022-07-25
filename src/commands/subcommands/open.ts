@@ -1,9 +1,10 @@
+import { OPEN_ID } from "../../constants";
 import { ask } from "../../util/prompt/ask";
 
-const question = async () => {
+const question = async (): Promise<boolean> => {
     return ask<boolean>({
         type: "confirm",
-        name: "o",
+        name: OPEN_ID,
         message: "Open AP?:",
     });
 };

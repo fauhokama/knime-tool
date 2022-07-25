@@ -40,3 +40,8 @@ export const DOWNLOAD_FOLDER = config.get("DOWNLOAD_FOLDER");
 export const REPOSITORIES = config.get("REPOSITORIES");
 export const DOWNLOAD_URL = config.get("DOWNLOAD_URL");
 export const VERSIONS = config.get("VERSIONS");
+
+// Non Updateable Constants:
+export const KNIME_INI_ID = "k"
+export const EXTENSION_ID = "e"
+export const OPEN_ID = "o"

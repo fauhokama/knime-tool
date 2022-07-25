@@ -1,5 +1,5 @@
 import { yellow } from "kleur/colors";
-import { EXTENSIONS } from "../../constants";
+import { EXTENSIONS, EXTENSION_ID } from "../../constants";
 import { getFullPathToExecutable } from "../../util/ap";
 import { ask } from "../../util/prompt/ask";
 import { choices } from "../../util/prompt/choices";
@@ -8,7 +8,7 @@ import { shellCmd } from "../../util/common/shellCmd";
 const question = async (): Promise<string[]> => {
 	return ask({
 		type: "multiselect",
-		name: `e`,
+		name: EXTENSION_ID,
 		message: "Select AP Extensions:",
 		choices: choices(EXTENSIONS),
 	});
