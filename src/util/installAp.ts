@@ -7,7 +7,7 @@ import { downloadAndDecompress } from "./downloadAndDecompress";
 
 // Downloads, Decompress and install extensions & knimeIni.
 // Returns absolutePath to AP dir.
-export const __ap = async (url: string, extensions: string[], knimeini: string[]): Promise<string> => {
+export const installAp = async (url: string, extensions: string[], knimeini: string[]): Promise<string> => {
     const filename = await downloadAndDecompress(url)
     const absolutePath = getAbsolutePath(filename);
     await extension.action(absolutePath, REPOSITORIES, extensions);

@@ -6,7 +6,7 @@ import { openAP } from "../util/ap";
 import { ask } from "../util/prompt/ask";
 import { choices } from "../util/prompt/choices";
 import { rerunArtifactory } from "../util/rerun";
-import { __ap } from "../util/__ap";
+import { installAp } from "../util/installAp";
 import extension from "./subcommands/extension";
 import knimeIni from "./subcommands/knimeIni";
 import open from "./subcommands/open";
@@ -18,7 +18,7 @@ const action = async () => {
 
 	const url = createArtifactoryURL(answer)
 
-	const absolutePath = await __ap(url, extensions, knimeini)
+	const absolutePath = await installAp(url, extensions, knimeini)
 
 	const shouldOpen = await open.question();
 
