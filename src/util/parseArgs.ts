@@ -1,4 +1,5 @@
 import arg = require("arg");
+import { EXTENSION_ID, KNIME_INI_ID, OPEN_ID } from "../constants";
 
 export type Args = {
 	commands: string[];
@@ -30,9 +31,9 @@ const getArgs = (rawArgs: string[]): Args => {
 const formatArgs = (args: Args) => {
 	const obj = {};
 	Object.assign(obj, helper(args.commands, "c"));
-	if (args.extensions) Object.assign(obj, { e: args.extensions });
-	if (args.knimeIni) Object.assign(obj, { k: args.knimeIni });
-	if (args.open) Object.assign(obj, { o: args.open });
+	if (args.extensions) Object.assign(obj, { [EXTENSION_ID]: args.extensions });
+	if (args.knimeIni) Object.assign(obj, { [KNIME_INI_ID]: args.knimeIni });
+	if (args.open) Object.assign(obj, { [OPEN_ID]: args.open });
 	return obj;
 };
 
