@@ -8,6 +8,7 @@ import { CONFIG_FILE, DOWNLOAD_FOLDER } from "./constants";
 import { ask } from "./util/prompt/ask";
 import { choices } from "./util/prompt/choices";
 import { yellow, bold, cyan } from "kleur";
+import { parseArgs } from "./util/parseArgs";
 
 const main = async () => {
 
@@ -15,7 +16,7 @@ const main = async () => {
 	if (!existsSync(DOWNLOAD_FOLDER)) mkdirSync(DOWNLOAD_FOLDER);
 
 	// Adds the possibility to rerun commands without the prompt ui.
-	override(process.argv);
+	override(parseArgs(process.argv));
 
 	// Print initial welcome
 	console.log(`
